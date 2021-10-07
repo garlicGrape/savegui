@@ -1,5 +1,7 @@
 package testGUI;
 
+
+//Swing and awt libraries that we need
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -184,6 +186,8 @@ public class GUI {
 				//draw recipes
 				deck.addRecipe("pictures/pizza_resize.png", recipe);
 				recipePanel.setRecipes(deck.getRecipes());
+				
+				//makes sure the recipe panel is initialized
 				recipePanel.setRecipeOn(recipeOn);
 				frame.repaint();
 			}
