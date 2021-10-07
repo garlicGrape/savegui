@@ -125,6 +125,7 @@ public class GUI {
 		addRecipePanel.add(saveRecipe);
 		//register new recipe button event listener
 		saveRecipe.addActionListener(new SaveRecipeListener());
+		addRecipePanel.createComponentMap();
 		
 	}
 	
@@ -135,7 +136,7 @@ public class GUI {
 		//create a new deck
 		deck = new Deck();
 		//clear message
-		message = "Salad Recipe";
+		message = "My Favourite Recipes";
 		//recipe is on
 		recipeOn = true;
 	}
@@ -178,8 +179,19 @@ public class GUI {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String recipe = addRecipePanel.getRecipe();
-			deck.addRecipe("pictures/salad.png", recipe);
-			cardLayout.show(frame.getContentPane(),"addRecipePanel");
+			if (!recipeOn) {
+				setupNewRecipe();
+				//draw recipes
+				deck.addRecipe("pictures/pizza_resize.png", recipe);
+				recipePanel.setRecipes(deck.getRecipes());
+				recipePanel.setRecipeOn(recipeOn);
+				frame.repaint();
+			}
+			else {
+				deck.addRecipe("pictures/pizza_resize.png", recipe);
+			}
+			
+			cardLayout.show(frame.getContentPane(),"recipePanel");
 			frame.repaint();
 		}
 		
@@ -253,11 +265,11 @@ class DrawPanel extends JPanel {
 		if (recipes != null) {
 			for (int i=0; i < recipes.size(); i++) {
 				Image image = recipes.get(i).getImage();
-				g.drawImage(image,(240+i*20),(285),this);
+				g.drawImage(image,(100+i*300),300,this);
 				int y = 225;
 				String recipe = recipes.get(i).getRecipe();
 				for(String line: recipe.split("\n")) {
-					g.drawString(line,240+i*20,y+=g.getFontMetrics().getHeight());
+					g.drawString(line,100+i*300,y+=g.getFontMetrics().getHeight());
 				}
 			}	
 		}
@@ -308,10 +320,7 @@ class HomePanel extends JPanel {
 */
 class AddRecipePanel extends JPanel {
 	
-	public AddRecipePanel() {
-		super();
-		createComponentMap();
-	}
+	
 	//message
 	String message = "Add a Recipe";
 	
@@ -341,7 +350,7 @@ class AddRecipePanel extends JPanel {
 	
 	}
 	
-	private void createComponentMap() {
+	public void createComponentMap() {
 		
 		Component[] components = getComponents();
 		for(Component comp: components)
